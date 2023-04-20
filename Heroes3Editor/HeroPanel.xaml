@@ -28,6 +28,10 @@
     </UserControl.Resources>
     <ScrollViewer>
         <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="ButtonRefresh" Click="ButtonRefresh_OnClick">Refresh</Button>
+                <Button Name="ButtonExpert" Click="ButtonExpert_OnClick">Expert</Button>
+            </StackPanel>
             <GroupBox Header="Primary Skills">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -54,6 +58,27 @@
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
                         <Label>Knowledge</Label>
                         <TextBox Name="Attribute3" TextChanged="UpdateAttribute"></TextBox>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Characteristics">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label>Movement Current</Label>
+                        <TextBox Name="MovementCurr" TextChanged="MovementCurr_OnTextChanged"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                        <Label>Mana</Label>
+                        <TextBox Name="ManaCurrent" TextChanged="ManaCurrent_OnTextChanged"></TextBox>
                     </StackPanel>
                 </Grid>
             </GroupBox>
@@ -397,7 +422,7 @@
                                 <Label>Dispel</Label>
                             </CheckBox>
                             <CheckBox ToolTip="Targeted allied creature(s) inflict maximum damage when they attack." Name="Bless" Checked="AddSpell" Unchecked="RemoveSpell">
-                                
+
                                 <Label>Bless</Label>
                             </CheckBox>
                             <CheckBox ToolTip="Reduces damage taken from water spells." Name="Protection_from_Water" Checked="AddSpell" Unchecked="RemoveSpell">

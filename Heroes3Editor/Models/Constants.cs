@@ -1,10 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Heroes3Editor.Models
 {
     public class Constants
     {
+        static Constants()
+        {
+            if (File.Exists("names.json"))
+            {
+                Heroes = File.ReadAllLines("names.json").Distinct().OrderBy(x => x).ToArray();
+                File.WriteAllLines("names.json", Heroes);
+            }
+
+            Heroes = Heroes.Distinct().OrderBy(x => x).ToArray();
+        }
         public static Skills Skills { get; } = new Skills();
         public static Spells Spells { get; } = new Spells();
         public static Creatures Creatures { get; } = new Creatures();
@@ -22,7 +33,8 @@ namespace Heroes3Editor.Models
 
         public static ArtifactInfo ArtifactInfo { get; } = new ArtifactInfo();
 
-        private static readonly string[] _heroes = {
+        public static string[] Heroes { get; } =
+        {
             "Christian", "Edric", "Orrin", "Sylvia", "Valeska", "Sorsha", "Tyris", "Lord Haart", "Catherine",
             "Roland", "Sir Mullich", "Adela", "Adelaide", "Caitlin", "Cuthbert", "Ingham", "Loynis", "Rion",
             "Sanya", "Jenova", "Kyrre", "Ivor", "Ufretin", "Clancy", "Thorgrim", "Ryland", "Mephala", "Gelu",
@@ -42,7 +54,6 @@ namespace Heroes3Editor.Models
             "Elmore","Illor","Leena","Miriam","Andal","Astra","Dargem","Eovacius","Manfred","Zilare",
             "Jeremy","Bidley","Spint", "Casmetra","Tark"
         };
-        public static string[] Heroes { get; } = _heroes.OrderBy(x => x).ToArray();
 
         public static Dictionary<string, int> HeroOffsets = new Dictionary<string, int>()
         {
@@ -117,6 +128,14 @@ namespace Heroes3Editor.Models
             Artifacts.AddArtifacts(Boots.GetArtifacts);
             Artifacts.AddArtifacts(Neck.GetArtifacts);
             Artifacts.AddArtifacts(Items.GetArtifacts);
+        }
+
+        public static void AddHeroName(string name)
+        {
+            if (!Heroes.Contains(name))
+            {
+                File.AppendAllLines("names.json", new[] { name });
+            }
         }
     }
 

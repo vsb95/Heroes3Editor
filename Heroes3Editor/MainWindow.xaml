@@ -51,10 +51,63 @@
             <Button Name="heroSearchBtn" IsEnabled="False" Click="SearchHero">
                 <Image Source="/Resources/VS2019/Search_16x.png" Width="16" Height="16"></Image>
             </Button>
+            <Separator></Separator>
+            <TextBox Name="SetWoodTb" Margin="5,0,5,0" Width="50">Wood</TextBox>
+            <TextBox Name="SetOreTb" Margin="5,0,5,0" Width="50">Ore</TextBox>
+            <TextBox Name="SetGoldTb" Margin="5,0,5,0" Width="50">Gold</TextBox>
+            <Button Name="FindResourcesBtn" Margin="5,0,5,0" Click="FindResourcesBtn_OnClick">
+                Find Resources
+            </Button>
         </ToolBar>
         <DockPanel DockPanel.Dock="Top">
-            <TabControl Name="heroTabs" Margin="5,5,5,5">
-            </TabControl>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Name="searchPanel" Margin="5">
+
+                        <TextBlock>Search</TextBlock>
+                        <TextBox Name="SearchValueTb" Width="50" Margin="5,0,5,0"></TextBox>
+                        <TextBlock>StartPosition</TextBlock>
+                        <TextBox Name="SearchFromTb" Width="50" Margin="5,0,5,0"></TextBox>
+                        <Button Name="SearchBtn" Margin="5,0,5,0" Click="SearchBtn_OnClick">
+                            Search
+                        </Button>
+
+                        <TextBlock Name="SearchResultText"  Margin="5,0,5,0">0</TextBlock>
+                        <TextBox Name="SetValueTb" Width="50" Margin="5,0,5,0"></TextBox>
+                        <Button Name="SetValueBtn" Margin="5,0,5,0" Click="SetValueBtn_OnClick">
+                            Set
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Name="resourcesPanel" Margin="5">
+                        <TextBlock>Wood</TextBlock>
+                        <TextBox Name="RedWood" Width="50" Margin="5,0,5,0"></TextBox>
+
+                        <TextBlock>Mercury</TextBlock>
+                        <TextBox Name="RedMercury" Width="50" Margin="5,0,5,0"></TextBox>
+
+                        <TextBlock>Ore</TextBlock>
+                        <TextBox Name="RedOre" Width="50" Margin="5,0,5,0"></TextBox>
+
+                        <TextBlock>Sulfur</TextBlock>
+                        <TextBox Name="RedSulfur" Width="50" Margin="5,0,5,0"></TextBox>
+
+                        <TextBlock>Crystal</TextBlock>
+                        <TextBox Name="RedCrystal" Width="50" Margin="5,0,5,0"></TextBox>
+
+                        <TextBlock>Gems</TextBlock>
+                        <TextBox Name="RedGems" Width="50" Margin="5,0,5,0"></TextBox>
+
+                        <TextBlock>Gold</TextBlock>
+                        <TextBox Name="RedGold" Width="50" Margin="5,0,5,0"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+                <TabControl Name="heroTabs" Margin="5" Grid.Row="1">
+                </TabControl>
+            </Grid>
         </DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -87,6 +88,9 @@ namespace Heroes3Editor
                     var cboBox = FindName("EA_" + gear) as ComboBox;
                     cboBox.SelectedItem = _hero.EquippedArtifacts[gear];
                 }
+
+                MovementCurr.Text = _hero.MoveCurrent.ToString();
+                ManaCurrent.Text = _hero.ManaCurrent.ToString();
             }
         }
 
@@ -121,7 +125,10 @@ namespace Heroes3Editor
 
             byte value;
             bool isNumber = byte.TryParse(txtBox.Text, out value);
-            if (!isNumber || value < 0 || value > 99) return;
+            if (!isNumber || value < 0 || value > 99)
+            {
+                return;
+            }
 
             var i = int.Parse(txtBox.Name.Substring("Attribute".Length));
             _hero.UpdateAttribute(i, value);
@@ -157,7 +164,10 @@ namespace Heroes3Editor
 
             byte level;
             bool isNumber = byte.TryParse(txtBox.Text, out level);
-            if (!isNumber || level < 0 || level > 3) return;
+            if (!isNumber || level < 0 || level > 3)
+            {
+                return;
+            }
 
             _hero.UpdateSkillLevel(slot, level);
         }
@@ -196,7 +206,10 @@ namespace Heroes3Editor
 
             int amount;
             bool isNumber = int.TryParse(txtBox.Text, out amount);
-            if (!isNumber || amount < 0 || amount > 9999) return;
+            if (!isNumber || amount < 0 || amount > 9999)
+            {
+                return;
+            }
 
             _hero.UpdateCreatureAmount(i, amount);
         }
@@ -271,6 +284,122 @@ namespace Heroes3Editor
             txtBlock.Text = "";
             txtBlock = FindName("Effects") as TextBlock;
             txtBlock.Text = "";
+        }
+
+        private void ButtonRefresh_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetDefault();
+        }
+
+        private void ButtonExpert_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetDefault("3");
+        }
+
+        private void SetDefault(string skillLevel = null)
+        {
+            MovementCurr.Text = "9999";
+            ManaCurrent.Text = "999";
+            if (!string.IsNullOrEmpty(skillLevel))
+            {
+                Attribute0.Text = "77";
+                Attribute1.Text = "77";
+                Attribute2.Text = "77";
+                Attribute3.Text = "77";
+
+                SetItemIndex(Skill0, Constants.Skills.Names, "Pathfinding", true);
+                SetItemIndex(Skill1, Constants.Skills.Names, "Logistics", true);
+                SetItemIndex(Skill2, Constants.Skills.Names, "Scouting", true);
+                SetItemIndex(Skill3, Constants.Skills.Names, "Wisdom", true);
+                SetItemIndex(Skill4, Constants.Skills.Names, "Air Magic", true);
+                SetItemIndex(Skill5, Constants.Skills.Names, "Earth Magic", true);
+                SkillLevel0.Text = skillLevel;
+                SkillLevel1.Text = skillLevel;
+                SkillLevel2.Text = skillLevel;
+                SkillLevel3.Text = skillLevel;
+                SkillLevel4.Text = skillLevel;
+                SkillLevel5.Text = skillLevel;
+            }
+
+            Magic_Arrow.IsChecked = true;
+            Slow.IsChecked = true;
+            Town_Portal.IsChecked = true;
+            Inferno.IsChecked = true;
+            Chain_Lightning.IsChecked = true;
+
+            Ballista.IsChecked = true;
+            Ammo_Cart.IsChecked = true;
+            First_Aid_Tent.IsChecked = true;
+
+            var selectedCreature = Creature0.SelectedItem as string;
+            Creature0.SelectedIndex = GetMarksman(selectedCreature);
+            CreatureAmount0.Text = "500";
+
+            SetItemIndex(EA_Neck, Constants.Neck.Names, "Pendant of Courage");
+            SetItemIndex(EA_LeftRing, Constants.Rings.Names, "Ring of the Wayfarer");
+            SetItemIndex(EA_RightRing, Constants.Rings.Names, "Equestrian's Gloves");
+            SetItemIndex(EA_Boots, Constants.Boots.Names, "Boots of Speed");
+            SetItemIndex(EA_Item1, Constants.Items.Names, "Endless Sack of Gold");
+            SetItemIndex(EA_Item2, Constants.Items.Names, "Inexhaustable Cart of Lumber");
+            SetItemIndex(EA_Item3, Constants.Items.Names, "Inexhaustable Cart of Ore");
+            SetItemIndex(EA_Item4, Constants.Items.Names, "Everpouring Vial of Mercury");
+            SetItemIndex(EA_Cloak, Constants.Cloak.Names, "Everflowing Crystal Cloak");
+        }
+
+        private void SetItemIndex(ComboBox comboBox, string[] names, string itemName, bool rewrite = false)
+        {
+            if (comboBox.SelectedIndex >= 0 && !rewrite)
+            {
+                return;
+            }
+            comboBox.SelectedIndex = names.ToList().IndexOf(itemName);
+        }
+
+        private int GetMarksman(string sameCityCreatureName)
+        {
+            if (string.IsNullOrEmpty(sameCityCreatureName))
+            {
+                return Constants.Creatures.Names.ToList().IndexOf("Sharpshooter");
+            }
+
+            var marksmans = new List<string>()
+            {
+                "Zealot",
+                "Grand Elf",
+                "Arch Mage",
+                "Magog",
+                "Power Lich",
+                "Medusa Queen",
+                "Cyclops King",
+                "Lizard Warrior",
+                "Ice Elemental"
+            };
+            var startIndex = Constants.Creatures.Names.ToList().IndexOf(sameCityCreatureName);
+            for (var index = startIndex; index < Constants.Creatures.Names.Length; index++)
+            {
+                var creature = Constants.Creatures.Names[index];
+                if (marksmans.Contains(creature))
+                {
+                    return index;
+                }
+            }
+            return Constants.Creatures.Names.ToList().IndexOf("Sharpshooter");
+        }
+
+        private void MovementCurr_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (int.TryParse(MovementCurr.Text, out var result))
+            {
+                _hero.MoveCurrent = result;
+            }
+        }
+
+        private void ManaCurrent_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (short.TryParse(ManaCurrent.Text, out var result) && result != _hero.ManaCurrent)
+            {
+                _hero.ManaCurrent = result;
+            }
         }
     }
 }
