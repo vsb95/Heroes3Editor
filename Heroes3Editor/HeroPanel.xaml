@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Heroes3Editor.Models"
+             xmlns:local2="clr-namespace:Heroes3Editor"
+             xmlns:heroes3Editor="clr-namespace:Heroes3Editor"
              mc:Ignorable="d" 
-             d:DesignHeight="1433" d:DesignWidth="800">
+             d:DesignHeight="1433" d:DesignWidth="800" d:DataContext="{d:DesignData }">
     <UserControl.Resources>
+        <local2:HeroPanel x:Key="hero"></local2:HeroPanel>
         <local:Constants x:Key="constants"/>
         <Style TargetType="GroupBox">
             <Setter Property="Margin" Value="5" />
@@ -83,7 +86,7 @@
                 </Grid>
             </GroupBox>
             <GroupBox Header="Secondary Skills">
-                <Grid DataContext="{Binding Source={StaticResource constants}}">
+                <Grid DataContext="{StaticResource hero}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
@@ -95,35 +98,35 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="2">
-                        <ComboBox Name="Skill0" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill0" ItemsSource="{Binding AllowableSkills}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel0" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Margin="2">
-                        <ComboBox Name="Skill1" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill1" ItemsSource="{Binding AllowableSkills}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel1" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Margin="2">
-                        <ComboBox Name="Skill2" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill2" ItemsSource="{Binding AllowableSkills}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel2" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3" Margin="2">
-                        <ComboBox Name="Skill3" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill3" ItemsSource="{Binding ElementName=(_hero.AllowableSkills)}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel3" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="2">
-                        <ComboBox Name="Skill4" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill4" ItemsSource="{Binding Path=(heroes3Editor:HeroPanel.AllowableSkills)}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel4" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="2">
-                        <ComboBox Name="Skill5" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill5" ItemsSource="{Binding Path=(heroes3Editor:HeroPanel.AllowableSkills)}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel5" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="2">
-                        <ComboBox Name="Skill6" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill6" ItemsSource="{Binding Path=(heroes3Editor:HeroPanel.AllowableSkills)}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel6" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" Margin="2">
-                        <ComboBox Name="Skill7" ItemsSource="{Binding Path=Skills.Names}" SelectionChanged="UpdateSkill" />
+                        <ComboBox Name="Skill7" ItemsSource="{Binding Path=(heroes3Editor:HeroPanel.AllowableSkills)}" SelectionChanged="UpdateSkill" />
                         <TextBox Name="SkillLevel7" TextChanged="UpdateSkillLevel"></TextBox>
                     </StackPanel>
                 </Grid>

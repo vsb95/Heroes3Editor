@@ -91,7 +91,10 @@ namespace Heroes3Editor.Models
             Name = name;
             _game = game;
             BytePosition = bytePosition;
-
+            if (game == null)
+            {
+                return;
+            }
             for (int i = 0; i < 4; ++i)
             {
                 Attributes[i] = _game.Bytes[BytePosition + Constants.HeroOffsets["Attributes"] + i];

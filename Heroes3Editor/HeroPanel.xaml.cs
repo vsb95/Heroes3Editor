@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,9 +12,10 @@ namespace Heroes3Editor
     /// <summary>
     /// Interaction logic for HeroPanel.xaml
     /// </summary>
-    public partial class HeroPanel : UserControl
+    public partial class HeroPanel : UserControl, INotifyPropertyChanged
     {
-        private Hero _hero;
+        public string[] AllowableSkills => Constants.Skills.Names.Where(x => _hero == null || !_hero.Skills.Contains(x)).ToArray();
+        private Hero _hero = new("init", null, 0);
 
         public Hero Hero
         {
@@ -40,6 +43,7 @@ namespace Heroes3Editor
                     if (i < _hero.NumOfSkills)
                     {
                         cboBox.SelectedItem = _hero.Skills[i];
+                        //cboBox.ItemsSource = AllowableSkills.Concat(new[] { _hero.Skills[i] });
                         txtBox.Text = _hero.SkillLevels[i].ToString();
                     }
                     else if (i > _hero.NumOfSkills)
@@ -91,6 +95,7 @@ namespace Heroes3Editor
 
                 MovementCurr.Text = _hero.MoveCurrent.ToString();
                 ManaCurrent.Text = _hero.ManaCurrent.ToString();
+                OnPropertyChanged(nameof(AllowableSkills));
             }
         }
 
@@ -155,6 +160,8 @@ namespace Heroes3Editor
                     nextCboBox.IsEnabled = true;
                 }
             }
+
+            OnPropertyChanged(nameof(AllowableSkills));
         }
 
         private void UpdateSkillLevel(object sender, RoutedEventArgs e)
@@ -399,6 +406,16 @@ namespace Heroes3Editor
             if (short.TryParse(ManaCurrent.Text, out var result) && result != _hero.ManaCurrent)
             {
                 _hero.ManaCurrent = result;
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
             }
         }
     }
